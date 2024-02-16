@@ -8,18 +8,18 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "preimport": "rimraf ./build && tsc import/*.ts --outDir build",
-    "import": "npm run preimport && node build/index.js"
+    "import": "tsx import/index.ts"
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.11.2",
     "nuxt": "^3.9.3",
+    "tsx": "^4.7.1",
     "vue": "^3.4.14",
     "vue-router": "^4.2.5"
   },
   "dependencies": {
-    "graphql": "^16.8.1",
     "rimraf": "^5.0.5",
+    "typescript": "^5.3.3",
     "weaviate-ts-client": "^2.0.0"
   }
 }

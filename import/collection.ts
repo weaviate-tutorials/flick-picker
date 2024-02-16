@@ -18,7 +18,7 @@ export const createBindCollection = async (name: string) => {
   const bindSchema = {
     class: name,
     moduleConfig: {
-      'multi2vec-bind': {
+      'multi2vec-clip': {
         textFields: ['name'],
         imageFields: ['image'],
         audioFields: ['audio'],
@@ -30,14 +30,14 @@ export const createBindCollection = async (name: string) => {
         name: 'name',
         dataType: ['text'],
         moduleConfig: {
-          'multi2vec-bind': { skip: true },
+          'multi2vec-clip': { skip: true },
         },
       },
       {
         name: 'media',
         dataType: ['text'],
         moduleConfig: {
-          'multi2vec-bind': { skip: true },
+          'multi2vec-clip': { skip: true },
         },
       },
       {
@@ -54,7 +54,7 @@ export const createBindCollection = async (name: string) => {
       }
     ],
     vectorIndexType: 'hnsw',
-    vectorizer: 'multi2vec-bind'
+    vectorizer: 'multi2vec-clip'
   }
   
   const res = await client
