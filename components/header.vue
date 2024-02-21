@@ -130,16 +130,40 @@
                     </form>
                 </div>
 
-                <div class="text-center mt-4">
-                    <button
+                <div v-if="!showRecs" class="text-center mt-4">
+                    <button @click="showRecs =! showRecs"
                         class="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
                         flickpick it ✨
                     </button>
-                    <p class="mt-6 text-lg leading-8 text-gray-600"></p>
 
                 </div>
 
             </div>
+            <article v-if="showRecs" class="rounded-xl bg-white mx-60 ring ring-indigo-50 mt-6 sm:p-6 lg:p-8 ">
+                <div class="flex items-start sm:gap-8">
+                    <div class="hidden sm:grid sm:size-20 sm:shrink-0 sm:place-content-center sm:rounded-full sm:border-2 sm:border-black"
+                        aria-hidden="true">
+                        <div class="flex items-center gap-1">
+                            <p class="text-7xl font-medium">
+                                🎞️
+                            </p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <strong
+                            class="rounded border border-indigo-500 bg-indigo-500 px-3 py-1.5 text-[10px] font-medium text-white">
+                            we have a winner 🫡
+                        </strong>
+
+
+                        <p class="mt-1 text-sm text-gray-700 font-semibold mt-3">
+                            {{ generatedRecs }}
+                        </p>
+
+                    </div>
+                </div>
+            </article>
             <Grid :search-results="response" />
             <div class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
                 aria-hidden="true">
@@ -155,9 +179,14 @@
 import { ref } from 'vue'
 import weaviate from "weaviate-ts-client";
 
+const runtimeConfig = useRuntimeConfig()
+
 const client = weaviate.client({
     scheme: 'http',
     host: 'localhost:8080',
+    headers: {
+        'X-OpenAI-Api-Key': runtimeConfig.public.openai,
+    },
 });
 
 const navigation = [
@@ -170,6 +199,8 @@ const imageFile = ref()
 const base64File = ref()
 const response = ref()
 const textTerm = ref('')
+const showRecs = ref(false)
+const generatedRecs = ref()
 
 function convertImage(event) {
     const file = event.target.files[0];
@@ -178,11 +209,9 @@ function convertImage(event) {
     reader.onload = () => {
         // base64File.value = ;
         base64File.value = toString(reader.result.split(',')[1]);
-        console.log(toString(reader.result.split(',')[1]))
+        // console.log(toString(reader.result.split(',')[1]))
         // explore this data piping 
         searchImage(reader.result)
-        // console.log('baseFile', base64File.value.slice(0, 20))
-        // console.log('reader', reader.result)
 
     };
 
@@ -198,33 +227,44 @@ function convertImage(event) {
 }
 
 async function searchImage(base64) {
+    const task = "from this list of movies, recommend one standout and tell me why you recommend it in a sarcastic teen tone"
     let result = await client.graphql
         .get()
         .withClassName('MovieTestBind')
-        .withFields('media name image')
+        .withGenerate({
+            groupedTask: task,
+            groupedProperties: ['title']
+        })
+        .withFields('media name image overview title')
         .withNearImage({
             image: base64
         })
-        .withLimit(8)
+        .withLimit(4)
         .do();
-
+    
+    generatedRecs.value = result.data.Get.MovieTestBind[0]._additional.generate.groupedResult
     response.value = result.data.Get.MovieTestBind
-    console.log('response', response.value)
     return result
 }
 
 
 async function textSearch() {
-    // console.log('helo')
+    const task = "from this list of movies, recommend one standout and tell me why you recommend it in a sarcastic teen tone"
     const res = await client.graphql
         .get()
         .withClassName("MovieTestBind")
-        .withFields("media name image")
+        .withGenerate({
+            groupedTask: task,
+            groupedProperties: ['title']
+        })
+        .withFields("image title media name overview")
         .withNearText({ concepts: [`"${textTerm.value}"`] })
         .withLimit(4)
         .do();
 
+    generatedRecs.value = res.data.Get.MovieTestBind[0]._additional.generate.groupedResult
     response.value = res.data.Get.MovieTestBind
+
 
 }
 </script>

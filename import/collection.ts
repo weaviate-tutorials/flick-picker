@@ -19,10 +19,8 @@ export const createBindCollection = async (name: string) => {
     class: name,
     moduleConfig: {
       'multi2vec-clip': {
-        textFields: ['name'],
+        textFields: ['name', 'title', 'overview', 'media'],
         imageFields: ['image'],
-        audioFields: ['audio'],
-        videoFields: ['video'],
       }
     },
     properties: [
@@ -42,15 +40,19 @@ export const createBindCollection = async (name: string) => {
       },
       {
         name: 'image',
-        dataType: ['blob'],
+        dataType: ['blob'] ,
       },
       {
-        name: 'audio',
-        dataType: ['blob'],
+        name: 'idnum',
+        dataType: ['int'] ,
       },
       {
-        name: 'video',
-        dataType: ['blob'],
+        name: 'title',
+        dataType: ['text'],
+      },
+      {
+        name: 'overview',
+        dataType: ['text'],
       }
     ],
     vectorIndexType: 'hnsw',

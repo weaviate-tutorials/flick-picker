@@ -10,7 +10,7 @@
             </div>
             <div class="absolute top-0 right-0 left-0 mx-5 mt-2 flex justify-between items-center">
                 <a href="#"
-                    class="text-xs bg-indigo-600 text-white px-5 py-2 uppercase hover:bg-white hover:text-indigo-600 transition ease-in-out duration-500">Name</a>
+                    class="text-xs bg-indigo-600 text-white px-5 py-2 uppercase hover:bg-white hover:text-indigo-600 transition ease-in-out duration-500"> {{ result.title }}</a>
                 
             </div>
             
