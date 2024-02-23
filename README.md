@@ -1,4 +1,4 @@
-## This is a Multimodal Search demo built with [Weaviate](https://weaviate.io), [CLIP](https://openai.com/research/clip) and [Nyxt.js](https://nuxt.com/) 
+## This is a Multimodal Search demo built with [Weaviate](https://weaviate.io), [CLIP](https://openai.com/research/clip) and [Nuxt.js](https://nuxt.com/) 
 
 👨🏾‍🍳 Blogpost - [Building Multimodal AI in TypeScript
 ](https://weaviate.io/blog/multimodal-search-in-typescript)
