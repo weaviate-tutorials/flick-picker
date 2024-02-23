@@ -40,7 +40,7 @@ yarn run import
 this may take a minute or two.
 
 
-### 🚀 Running your Next.js Application.
+### 🚀 Running your Nuxt.js Application.
 > Make sure you have your Weaviate instance running with data imported before starting your Next.js Web App.
 
 To run the Web App
