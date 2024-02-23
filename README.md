@@ -41,7 +41,7 @@ this may take a minute or two.
 
 
 ### 🚀 Running your Nuxt.js Application.
-> Make sure you have your Weaviate instance running with data imported before starting your Next.js Web App.
+> Make sure you have your Weaviate instance running with data imported before starting your Nuxt.js Web App.
 
 To run the Web App
 ```bash
