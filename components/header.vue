@@ -38,8 +38,9 @@
                     <div class="flex items-center justify-between">
                         <a href="#" class="-m-1.5 p-1.5">
                             <span class="sr-only">Your Company</span>
-                            <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                                alt="" />
+                            <p class="w-12 h-12 text-indigo-600 bg-indigo-50 rounded-full flex items-center justify-center">
+                                🤳🏾
+                            </p>
                         </a>
                         <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700" @click="mobileMenuOpen = false">
                             <span class="sr-only">Close menu</span>
@@ -130,15 +131,31 @@
                     </form>
                 </div>
 
-                <div v-if="!showRecs" class="text-center mt-4">
-                    <button @click="showRecs =! showRecs"
-                        class="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
-                        flickpick it ✨
-                    </button>
+                <div v-if="response">
+                    <div v-if="!showRecs" class="text-center mt-4">
+                        <button @click="showRecs = !showRecs"
+                            class="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
+                            flickpick it ✨
+                        </button>
 
+                    </div>
                 </div>
 
             </div>
+
+            
+
+            <div v-if="loading" class=" mx-60 mt-6 sm:p-6 lg:p-8 ">
+                <div class="flex items-center justify-center sm:gap-8">
+                    <div class="flex items-center justify-center text-center h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+                role="status">
+                <span
+                    class=" !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">Loading...</span>
+            </div>
+                    
+                </div>
+            </div>
+
             <article v-if="showRecs" class="rounded-xl bg-white mx-60 ring ring-indigo-50 mt-6 sm:p-6 lg:p-8 ">
                 <div class="flex items-start sm:gap-8">
                     <div class="hidden sm:grid sm:size-20 sm:shrink-0 sm:place-content-center sm:rounded-full sm:border-2 sm:border-black"
@@ -195,12 +212,12 @@ const navigation = [
 ]
 
 const mobileMenuOpen = ref(false)
-const imageFile = ref()
 const base64File = ref()
 const response = ref()
 const textTerm = ref('')
 const showRecs = ref(false)
 const generatedRecs = ref()
+const loading = ref(false)
 
 function convertImage(event) {
     const file = event.target.files[0];
@@ -210,6 +227,7 @@ function convertImage(event) {
         // base64File.value = ;
         base64File.value = toString(reader.result.split(',')[1]);
         // console.log(toString(reader.result.split(',')[1]))
+
         // explore this data piping 
         searchImage(reader.result)
 
@@ -227,6 +245,8 @@ function convertImage(event) {
 }
 
 async function searchImage(base64) {
+    showRecs.value = false
+    loading.value = true   
     const task = "from this list of movies, recommend one standout and tell me why you recommend it in a sarcastic teen tone"
     let result = await client.graphql
         .get()
@@ -241,14 +261,17 @@ async function searchImage(base64) {
         })
         .withLimit(4)
         .do();
-    
+
     generatedRecs.value = result.data.Get.MovieTestBind[0]._additional.generate.groupedResult
     response.value = result.data.Get.MovieTestBind
+    loading.value = false
     return result
 }
 
 
 async function textSearch() {
+    showRecs.value = false
+    loading.value = true
     const task = "from this list of movies, recommend one standout and tell me why you recommend it in a sarcastic teen tone"
     const res = await client.graphql
         .get()
@@ -264,7 +287,8 @@ async function textSearch() {
 
     generatedRecs.value = res.data.Get.MovieTestBind[0]._additional.generate.groupedResult
     response.value = res.data.Get.MovieTestBind
-
+    loading.value = false
+    return response
 
 }
 </script>
