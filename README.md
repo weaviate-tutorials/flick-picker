@@ -3,7 +3,7 @@
 👨🏾‍🍳 Blogpost - [Building Multimodal AI in TypeScript
 ](https://weaviate.io/blog/multimodal-search-in-typescript)
 
-
+![Cover](cover.png)
 
 ## 🐥 Getting Started
 
