@@ -1,75 +1,68 @@
-# Nuxt 3 Minimal Starter
+## This is a Multimodal Search demo built with [Weaviate](https://weaviate.io), [CLIP](https://openai.com/research/clip) and [Nyxt.js](https://nuxt.com/) 
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+👨🏾‍🍳 Blogpost - [Building Multimodal AI in TypeScript
+](https://weaviate.io/blog/multimodal-search-in-typescript)
 
-## Setup
 
-Make sure to install the dependencies:
+
+## 🐥 Getting Started
+
+First, clone the project with the command below
 
 ```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
+git clone https://github.com/malgamves/flick-picker
 ```
 
-## Development Server
+The repository lets us do three things
+1. Run the Nuxt.js Web App.
+2. Run an instance of Weaviate.
+3. Import images, and text into your Weaviate database.
 
-Start the development server on `http://localhost:3000`:
 
+
+### 🏗️ Running Weaviate  
+> Note that the first time you run it, Docker will download ~4.8GB multi2vec-clip Weaviate module, which contains the CLIP model.
+
+To start the Weaviate instance, run the following command, which will use the `docker-compose.yml` file.
 ```bash
-# npm
-npm run dev
+docker compose up -d
+```
 
-# pnpm
-pnpm run dev
 
-# yarn
+### 📩 Importing Data
+> Before you can import data, add any files to their respective media type in the `public/` folder. You will have to download a dataset of [movie posters](https://drive.google.com/drive/folders/1BKLJmIt9YD0rTGImrHeUc91io5RjGm_l?usp=sharing) and place them in `/public/image`.
+
+With your data in the right folder, run `yarn install` to install all project dependencies and to import your data into Weaviate and initialise a collection, run:
+```bash
+yarn run import
+```
+
+this may take a minute or two.
+
+
+### 🚀 Running your Next.js Application.
+> Make sure you have your Weaviate instance running with data imported before starting your Next.js Web App.
+
+To run the Web App
+```bash
 yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+... and you can search away!! 
 
-Build the application for production:
 
-```bash
-# npm
-npm run build
+### 📚 Resources
 
-# pnpm
-pnpm run build
+Learn more about multimodal applications
+- [Multimodal Retrieval Augmented Generation(RAG)](https://weaviate.io/blog/multimodal-rag)
+- [Multimodal Embedding Models](https://weaviate.io/blog/multimodal-models)
 
-# yarn
-yarn build
 
-# bun
-bun run build
-```
+### 🤷🏾‍♂️ Troubleshooting
 
-Locally preview production build:
+- Check out the [Weaviate Docs](https://weaviate.io/developers/weaviate)
+- [Open an Issue](https://github.com/malgamves/next-multimodal-search-demo/issues)
 
-```bash
-# npm
-npm run preview
 
-# pnpm
-pnpm run preview
+Some credit goes to Steven for his [Spirals template](https://github.com/steven-tey/spirals)
 
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
