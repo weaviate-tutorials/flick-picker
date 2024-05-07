@@ -1,15 +1,21 @@
-import weaviate, { type WeaviateClient } from 'weaviate-ts-client';
+import weaviate, { type WeaviateClient } from 'weaviate-client';
+import 'dotenv/config'
 
 let client: WeaviateClient;
 
-export const getWeaviateClient = () => {
+export const getWeaviateClient = async () => {
   if (!client) {
-    client = weaviate.client({
-      scheme: 'http',
-      host: 'localhost:8080',
-    });
+    client = await weaviate.connectToWCS(
+  process.env.NUXT_WEAVIATE_URL || '',
+  {
+    authCredentials: new weaviate.ApiKey(process.env.NUXT_WEAVIATE_API_KEY || ''),
+    headers: {
+      'X-PaLM-Api-Key': process.env.NUXT_VERTEX_PALM_API_KEY || '',  // Replace with your inference API key
+      'X-OpenAI-Api-Key': process.env.NUXT_OPENAI_API_KEY || '' // Replace with your OpenAI API key
+    }
+  }
+)
   };
   
-  // client.misc.readyChecker().do().then(console.log)
   return client;
 }

@@ -1,7 +1,7 @@
 import { createBindCollection, deleteCollection } from './collection';
 import { importMediaFiles } from './import';
 
-const collectionName = 'MovieTestBind';
+const collectionName = 'PalmMediaTest';
 
 const run = async () => {
   await deleteCollection(collectionName);

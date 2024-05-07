@@ -1,4 +1,4 @@
-import {readdirSync, readFileSync } from 'fs'
+import { readdirSync, readFileSync } from 'fs'
 
 export interface FileInfo {
     name: string;

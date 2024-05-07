@@ -1,10 +1,10 @@
-import { type WeaviateClient } from 'weaviate-ts-client';
+import weaviate, { type WeaviateClient } from 'weaviate-client';
 import { getWeaviateClient } from './client';
 
-const client: WeaviateClient = getWeaviateClient();
+const client: WeaviateClient = await getWeaviateClient();
 
 const collectionExists = async (name: string) => {
-  return client.schema.exists(name);
+  return client.collections.exists(name);
 }
 
 export const createBindCollection = async (name: string) => {
@@ -15,64 +15,38 @@ export const createBindCollection = async (name: string) => {
   
   console.log(`Creating collection [${name}].`);
 
-  const bindSchema = {
-    class: name,
-    moduleConfig: {
-      'multi2vec-clip': {
-        textFields: ['name', 'title', 'overview', 'media'],
-        imageFields: ['image'],
-      }
+  const newCollection = await client.collections.create({
+    name: name,
+    vectorizers: weaviate.configure.vectorizer.multi2VecPalm('default',{
+      projectId: 'semi-random-dev',
+      location: 'us-central1',
+      imageFields: ['image'],
+      textFields: ['name', 'description']
     },
+    ),
+    generative: weaviate.configure.generative.openAI(),
     properties: [
       {
         name: 'name',
-        dataType: ['text'],
-        moduleConfig: {
-          'multi2vec-clip': { skip: true },
-        },
+        dataType: 'text',
       },
       {
-        name: 'media',
-        dataType: ['text'],
-        moduleConfig: {
-          'multi2vec-clip': { skip: true },
-        },
+        name: 'image', 
+        dataType: 'blob',
       },
       {
-        name: 'image',
-        dataType: ['blob'] ,
-      },
-      {
-        name: 'idnum',
-        dataType: ['int'] ,
-      },
-      {
-        name: 'title',
-        dataType: ['text'],
-      },
-      {
-        name: 'overview',
-        dataType: ['text'],
+        name: 'description',
+        dataType: 'text',
       }
-    ],
-    vectorIndexType: 'hnsw',
-    vectorizer: 'multi2vec-clip'
-  }
-  
-  const res = await client
-    .schema.classCreator()
-    .withClass(bindSchema)
-    .do();
+    ]
+  })
 
-  console.log(JSON.stringify(res, null, 2));
+  console.log(JSON.stringify(newCollection, null, 2));
 }
 
 export const deleteCollection = async (name: string) => {
   console.log(`Deleting collection ${name}...`);
-  await client.schema
-  .classDeleter()
-  .withClassName(name)
-  .do();
+  await client.collections.delete(name);
 
   console.log(`Deleted collection ${name}.`);
 }

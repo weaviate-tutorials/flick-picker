@@ -84,12 +84,12 @@
                     <h1
                         class="mb-6 text-4xl font-extrabold leading-none tracking-normal text-gray-900 md:text-6xl md:tracking-tight">
                         <span
-                            class="block w-full text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-purple-500 lg:inline">FlickPickerGPT</span>
+                            class="block w-full text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-purple-500 lg:inline">FlickPicker</span>
                     </h1>
 
 
                     <p class="mt-6 text-lg leading-8 text-gray-600">Skip the hunt, find your background noise film for the
-                        perfect 3 hour after work scroll session.</p>
+                        perfect 3 hour after work scroll session</p>
 
                     <form class="flex items-center pt-4">
                         <label for="simple-search" class="sr-only">Search</label>
@@ -194,17 +194,8 @@
   
 <script setup>
 import { ref } from 'vue'
-import weaviate from "weaviate-ts-client";
 
 const runtimeConfig = useRuntimeConfig()
-
-const client = weaviate.client({
-    scheme: 'http',
-    host: 'localhost:8080',
-    headers: {
-        'X-OpenAI-Api-Key': runtimeConfig.public.openai,
-    },
-});
 
 const navigation = [
     { name: 'Product', href: '#' },
@@ -223,13 +214,15 @@ function convertImage(event) {
     const file = event.target.files[0];
     const reader = new FileReader();
 
-    reader.onload = () => {
+    
+
+    reader.onload = async () => {
         // base64File.value = ;
         base64File.value = toString(reader.result.split(',')[1]);
         // console.log(toString(reader.result.split(',')[1]))
 
         // explore this data piping 
-        searchImage(reader.result)
+        await searchImage(reader.result)
 
     };
 
@@ -244,51 +237,29 @@ function convertImage(event) {
     }
 }
 
-async function searchImage(base64) {
-    showRecs.value = false
-    loading.value = true   
-    const task = "from this list of movies, recommend one standout and tell me why you recommend it in a sarcastic teen tone"
-    let result = await client.graphql
-        .get()
-        .withClassName('MovieTestBind')
-        .withGenerate({
-            groupedTask: task,
-            groupedProperties: ['title']
-        })
-        .withFields('media name image overview title')
-        .withNearImage({
-            image: base64
-        })
-        .withLimit(4)
-        .do();
 
-    generatedRecs.value = result.data.Get.MovieTestBind[0]._additional.generate.groupedResult
-    response.value = result.data.Get.MovieTestBind
+async function searchImage(file) {
+    loading.value = true
+    
+    response.value = await $fetch('/api/search', {
+    method: 'post',
+    body: JSON.stringify({
+        data: file,
+      })
+  })
     loading.value = false
-    return result
-}
+  }
 
 
 async function textSearch() {
     showRecs.value = false
     loading.value = true
-    const task = "from this list of movies, recommend one standout and tell me why you recommend it in a sarcastic teen tone"
-    const res = await client.graphql
-        .get()
-        .withClassName("MovieTestBind")
-        .withGenerate({
-            groupedTask: task,
-            groupedProperties: ['title']
-        })
-        .withFields("image title media name overview")
-        .withNearText({ concepts: [`"${textTerm.value}"`] })
-        .withLimit(4)
-        .do();
+    let res = await $fetch(`/api/search?query=${textTerm.value}`)
+    response.value = res.objects
+    console.log(res)
 
-    generatedRecs.value = res.data.Get.MovieTestBind[0]._additional.generate.groupedResult
-    response.value = res.data.Get.MovieTestBind
+    generatedRecs.value = res.generated
     loading.value = false
-    return response
 
 }
 </script>

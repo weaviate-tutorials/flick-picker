@@ -19,9 +19,12 @@
   },
   "dependencies": {
     "csv-parse": "^5.5.3",
+    "dotenv": "^16.4.5",
     "graphql": "^16.8.1",
     "rimraf": "^5.0.5",
     "typescript": "^5.3.3",
-    "weaviate-ts-client": "^2.0.0"
+    "weaviate-client": "^3.0.0-rc.1",
+    "weaviate-ts-client": "^2.0.0",
+    "zod": "^3.23.6"
   }
 }
