@@ -21,7 +21,6 @@ export const createBindCollection = async (name: string) => {
       projectId: 'semi-random-dev',
       location: 'us-central1',
       imageFields: ['image'],
-      textFields: ['name', 'description']
     },
     ),
     generative: weaviate.configure.generative.openAI(),

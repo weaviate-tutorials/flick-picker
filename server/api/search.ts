@@ -23,21 +23,15 @@ export default defineEventHandler<{query: { query: string } }>(async (event) => 
   if (!result.success)
     throw result.error.issues
 
-
-  const task = `from this list of movies, recommend one standout and tell me why you recommend it in a sarcastic teen tone. respond in dutch`
-
   const searchTerm = result.data.query
   const myCollection = client.collections.get('PalmMediaTest')
 
-  const response = await myCollection.generate.nearText(searchTerm, {
-    groupedTask: task,
-    groupedProperties: ['title']
-  },
+  const response = await myCollection.query.nearText(searchTerm,
     {
-    limit: 4
+    limit: 20
   })
 
-  console.log(response)
+  // console.log(response.objects)
 
-  return response
+  return response.objects
 })

@@ -1,5 +1,8 @@
 <template>
   <div>
-    <Header />
+    <!-- <Header /> -->
+    <!-- <Iphone /> -->
+    <Webphone />
+    <!-- <Gallery />  -->
   </div>
 </template>
