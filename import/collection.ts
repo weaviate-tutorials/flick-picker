@@ -17,12 +17,13 @@ export const createBindCollection = async (name: string) => {
 
   const newCollection = await client.collections.create({
     name: name,
-    vectorizers: weaviate.configure.vectorizer.multi2VecPalm('default',{
+    vectorizers: [weaviate.configure.vectorizer.multi2VecPalm({
+      name: 'default',
       projectId: 'semi-random-dev',
       location: 'us-central1',
       imageFields: ['image'],
     },
-    ),
+    )],
     generative: weaviate.configure.generative.openAI(),
     properties: [
       {

@@ -18,7 +18,8 @@ const client: WeaviateClient = await weaviate.connectToWCS(
     const collection = client.collections.get('PalmMediaTest')
 
     const response = await collection.query.nearImage(base64, {
-      limit: 15
+      limit: 15,
+      distance: 1.3
     })
 
     return response.objects

@@ -8,6 +8,8 @@ dist
 
 # Node dependencies
 node_modules
+public/images
+yarn.lock
 
 # Logs
 logs

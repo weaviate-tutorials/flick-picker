@@ -5,7 +5,7 @@ let client: WeaviateClient;
 
 export const getWeaviateClient = async () => {
   if (!client) {
-    client = await weaviate.connectToWCS(
+    client = await weaviate.connectToWeaviateCloud(
   process.env.NUXT_WEAVIATE_URL || '',
   {
     authCredentials: new weaviate.ApiKey(process.env.NUXT_WEAVIATE_API_KEY || ''),

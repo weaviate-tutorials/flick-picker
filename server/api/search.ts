@@ -31,7 +31,6 @@ export default defineEventHandler<{query: { query: string } }>(async (event) => 
     limit: 20
   })
 
-  // console.log(response.objects)
 
   return response.objects
 })
