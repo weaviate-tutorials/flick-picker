@@ -10,12 +10,11 @@ export const getWeaviateClient = async () => {
   {
     authCredentials: new weaviate.ApiKey(process.env.NUXT_WEAVIATE_API_KEY || ''),
     headers: {
-      'X-PaLM-Api-Key': process.env.NUXT_VERTEX_PALM_API_KEY || '',  // Replace with your inference API key
-      'X-OpenAI-Api-Key': process.env.NUXT_OPENAI_API_KEY || '' // Replace with your OpenAI API key
+      'X-Palm-Api-Key': process.env.NUXT_VERTEX_API_KEY || '',  // Replace with your inference API key
     }
   }
 )
   };
   
-  return client;
+ return client;
 }

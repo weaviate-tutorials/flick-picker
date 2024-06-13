@@ -9,6 +9,9 @@
             </div>
             <div class="h-[64px] w-[3px] bg-gray-800 dark:bg-gray-800 absolute -end-[17px] top-[142px] rounded-e-lg"></div>
             <div class="rounded-[2rem] overflow-hidden w-[272px] h-[572px] bg-white dark:bg-gray-800">
+                <div
+            class="relative mx-auto w-[272px] h-[572px] px-4 py-4 bg-slate-500">
+            <div class="overflow-hidden ">
                 <div class="text-center">
                     <h1
                         class="mb-6 text-4xl font-extrabold leading-none tracking-normal text-gray-900 md:text-6xl md:tracking-tight">
@@ -60,22 +63,24 @@
                         </label>
                     </form>
                 </div>
-                <div class="w-auto h-[500px] overflow-auto touch-pan-y">
-                    <div v-if="show" class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div class="w-auto h-screen overflow-auto touch-pan-y">
+                    <div v-if="show" class="grid grid-cols-2 md:grid-cols-2 gap-2">
                         <div v-for="image in images" :key="image">
-                            <img class="h-16 w-24 max-w-full rounded-lg"
+                            <img class="object-cover h-36 w-36 max-w-full rounded-lg"
                                 :src="image" alt="">
                         </div>
                     
                     </div>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div class="grid grid-cols-2 md:grid-cols-2 gap-4">
                         <div v-for="result in response" :key="result">
-                            <img class="h-16 w-24 max-w-full rounded-lg "
+                            <img class="object-cover h-36 w-36 max-w-full rounded-lg "
                                 :src="`/images/${result.properties.name}`" alt="">
                         </div>
                     </div>
                 </div>
                 </div>
+            </div>
+        </div>
             </div>
         </div>
 </template>

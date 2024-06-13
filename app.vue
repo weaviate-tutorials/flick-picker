@@ -1,8 +1,6 @@
 <template>
   <div>
-    <!-- <Header /> -->
-    <!-- <Iphone /> -->
-    <Webphone />
-    <!-- <Gallery />  -->
+    <Iphone />
+    <!-- <Webphone /> -->
   </div>
 </template>
