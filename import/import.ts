@@ -5,7 +5,6 @@ import { readFileSync } from 'fs';
 import fs from 'fs';
 import { parse } from 'csv-parse';
 
-
 const sourceBase = 'public';
 const sourceImages = sourceBase + '/images/'
 
@@ -69,5 +68,3 @@ const insertImages = async (collectionName: string) => {
     if (counter % batchSize !== 0)
         await imagesCollection.data.insertMany(dataObject);
 }
-
-

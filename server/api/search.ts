@@ -5,31 +5,42 @@ const responseSchema = z.object({
   query: z.string(),
 })
 
-export default defineEventHandler<{query: { query: string } }>(async (event) => {
-  const config = useRuntimeConfig(event)
+
+
+export default defineLazyEventHandler(async () => {
+  const config = useRuntimeConfig()
 
   const client: WeaviateClient = await weaviate.connectToWeaviateCloud(config.host,{
       authCredentials: new weaviate.ApiKey(config.key),
       headers: {
         'X-PaLM-Api-Key': config.palm || '',
-        'X-OpenAI-Api-Key': config.openai
       }
     }
   )
 
-  const result = await getValidatedQuery(event, body => responseSchema.safeParse(body))
-  if (!result.success)
-    throw result.error.issues
-
-  const searchTerm = result.data.query
-  const myCollection = client.collections.get('MovieSearcher')
-
-  const response = await myCollection.query.nearText(searchTerm,{
-    limit: 8,
-  })
-
-  return response
+const responseSchema = z.object({
+  query: z.string(),
 })
 
 
+async function vectorSearch(searchTerm:string) {
+  const myCollection = client.collections.get('PhoneGallery')
 
+  const response = await myCollection.query.nearText(searchTerm,{
+    limit: 20,
+  })
+
+  return response.objects
+}
+
+  return defineEventHandler<{query: { query: string } }>(async (event) => {
+  
+    const result = await getValidatedQuery(event, body => responseSchema.safeParse(body))
+    if (!result.success)
+      throw result.error.issues
+  
+    const searchTerm = result.data.query
+  
+    return await vectorSearch(searchTerm)
+  })
+})

@@ -1,7 +1,7 @@
 import weaviate, { WeaviateClient } from "weaviate-client"
 
-export default defineEventHandler(async (event) => {
-    const config = useRuntimeConfig(event)
+export default defineLazyEventHandler(async () => {
+  const config = useRuntimeConfig()
 
 const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
     config.host,
@@ -12,11 +12,12 @@ const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
       }
     }
   )
+
+  return defineEventHandler(async (event) => {
     const body = await readBody(event)
     const base64 = body.data.split(',')[1];
 
     const collection = client.collections.get('MovieSearcher')
-
     const response = await collection.query.nearImage(base64, {
       limit: 15,
       distance: 1.3
@@ -24,3 +25,4 @@ const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
 
     return response.objects
   })
+})
