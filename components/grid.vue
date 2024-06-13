@@ -5,7 +5,7 @@
 
         <div class="relative w-full flex items-end justify-start text-left bg-cover bg-center">
             <img 
-            :src="`/image/${result.properties.name}`">
+            :src="`/images/${result.properties.name}`">
             <div class="absolute top-0 mt-20 right-0 bottom-0 left-0 bg-gradient-to-b from-transparent to-gray-900">
             </div>
             <div class="absolute top-0 right-0 left-0 mx-5 mt-2 flex justify-between items-center">

@@ -22,12 +22,14 @@ export default defineEventHandler<{query: { query: string } }>(async (event) => 
     throw result.error.issues
 
   const searchTerm = result.data.query
-  const myCollection = client.collections.get('PhoneGallery')
+  const myCollection = client.collections.get('MovieSearcher')
 
   const response = await myCollection.query.nearText(searchTerm,{
-    limit: 20,
+    limit: 8,
   })
 
-  console.log('all objects', response)
-  return response.objects
+  return response
 })
+
+
+
