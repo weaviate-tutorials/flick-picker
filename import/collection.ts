@@ -7,7 +7,7 @@ const collectionExists = async (name: string) => {
   return client.collections.exists(name);
 }
 
-export const createBindCollection = async (name: string) => {
+export const createCollection = async (name: string) => {
   if(await collectionExists(name)) {
     console.log(`The collection [${name}] already exists. No need to create it.`);
     return;
@@ -17,13 +17,12 @@ export const createBindCollection = async (name: string) => {
 
   const newCollection = await client.collections.create({
     name: name,
-    vectorizers: [weaviate.configure.vectorizer.multi2VecPalm({
-      name: 'default',
+    vectorizers: weaviate.configure.vectorizer.multi2VecPalm({
       projectId: 'semi-random-dev',
       location: 'us-central1',
       imageFields: ['image'],
-    },
-    )],
+    }),
+    // remove when moving to repo
     generative: weaviate.configure.generative.openAI(),
     properties: [
       {
@@ -34,13 +33,9 @@ export const createBindCollection = async (name: string) => {
         name: 'image', 
         dataType: 'blob',
       },
-      {
-        name: 'description',
-        dataType: 'text',
-      }
     ]
   })
-
+  
   console.log(JSON.stringify(newCollection, null, 2));
 }
 

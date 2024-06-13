@@ -8,9 +8,7 @@ const responseSchema = z.object({
 export default defineEventHandler<{query: { query: string } }>(async (event) => {
   const config = useRuntimeConfig(event)
 
-  const client: WeaviateClient = await weaviate.connectToWCS(
-    config.host,
-    {
+  const client: WeaviateClient = await weaviate.connectToWeaviateCloud(config.host,{
       authCredentials: new weaviate.ApiKey(config.key),
       headers: {
         'X-PaLM-Api-Key': config.palm || '',
@@ -24,13 +22,12 @@ export default defineEventHandler<{query: { query: string } }>(async (event) => 
     throw result.error.issues
 
   const searchTerm = result.data.query
-  const myCollection = client.collections.get('PalmMediaTest')
+  const myCollection = client.collections.get('PhoneGallery')
 
-  const response = await myCollection.query.nearText(searchTerm,
-    {
-    limit: 20
+  const response = await myCollection.query.nearText(searchTerm,{
+    limit: 20,
   })
 
-
+  console.log('all objects', response)
   return response.objects
 })

@@ -3,7 +3,7 @@ import weaviate, { WeaviateClient } from "weaviate-client"
 export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig(event)
 
-const client: WeaviateClient = await weaviate.connectToWCS(
+const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
     config.host,
     {
       authCredentials: new weaviate.ApiKey(config.key),
@@ -15,7 +15,7 @@ const client: WeaviateClient = await weaviate.connectToWCS(
     const body = await readBody(event)
     const base64 = body.data.split(',')[1];
 
-    const collection = client.collections.get('PalmMediaTest')
+    const collection = client.collections.get('PhoneGallery')
 
     const response = await collection.query.nearImage(base64, {
       limit: 15,
