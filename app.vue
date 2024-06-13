@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Iphone />
-    <!-- <Webphone /> -->
+    <Header />
   </div>
 </template>
