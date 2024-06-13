@@ -24,13 +24,13 @@ const responseSchema = z.object({
 
 
 async function vectorSearch(searchTerm:string) {
-  const myCollection = client.collections.get('PhoneGallery')
+  const myCollection = client.collections.get('MovieSearcher')
 
   const response = await myCollection.query.nearText(searchTerm,{
-    limit: 20,
+    limit: 8,
   })
 
-  return response.objects
+  return response
 }
 
   return defineEventHandler<{query: { query: string } }>(async (event) => {
