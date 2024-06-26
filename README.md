@@ -10,7 +10,7 @@
 First, clone the project with the command below
 
 ```bash
-git clone https://github.com/malgamves/flick-picker
+git clone https://github.com/weaviate-tutorials/flick-picker
 ```
 
 The repository lets us do three things
@@ -25,10 +25,10 @@ Create a Weaviate instance on Weaviate Cloud Services as described in [this guid
 
 ### 🦿 Create a `.env` file and add the following keys
 
-- your Google Vertex API key as `NUXT_VERTEX_API_KEY` (you can get this in your [Vertex AI settings](https://console.cloud.google.com/apis/credentials))
-- your Open AI API key as `NUXT_OPENAI` (you can get this in your [Open AI settings](https://platform.openai.com/account/api-keys))
-- your Weaviate API key as `NUXT_WEAVIATE_API_KEY` (you can get this in your [Weaviate dashboard](https://console.weaviate.cloud/dashboard) under sandbox details)
-- your Weaviate host URL as `NUXT_WEAVIATE_URL` (you can get this in your [Weaviate dashboard](https://console.weaviate.cloud/dashboard) under sandbox details)
+- your Google Vertex API key as `NUXT_GOOGLE_API_KEY` (you can get this in your [Vertex AI settings](https://console.cloud.google.com/apis/credentials))
+- your Open AI API key as `NUXT_OPENAI_API_KEY` (you can get this in your [Open AI settings](https://platform.openai.com/account/api-keys))
+- your Weaviate API key as `NUXT_WEAVIATE_ADMIN_KEY` (you can get this in your [Weaviate dashboard](https://console.weaviate.cloud/dashboard) under sandbox details)
+- your Weaviate host URL as `NUXT_WEAVIATE_HOST_URL` (you can get this in your [Weaviate dashboard](https://console.weaviate.cloud/dashboard) under sandbox details)
 
 
 ### 📩 Importing Data
