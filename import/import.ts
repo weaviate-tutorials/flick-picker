@@ -21,7 +21,7 @@ const insertImages = async (collectionName: string) => {
     let overview = '';
     const batchSize = 20;
     let dataObject = [];
-    const imagesCollection = client.collections.get(collectionName);
+    const imagesCollection = client.collections.use(collectionName);
 
     const csvData = readFileSync(`${sourceBase}/merged_finale.csv`, 'utf-8');
     console.log(csvData)

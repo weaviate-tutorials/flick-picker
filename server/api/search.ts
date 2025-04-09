@@ -24,7 +24,7 @@ const responseSchema = z.object({
 
 
 async function vectorSearch(searchTerm:string) {
-  const myCollection = client.collections.get('MovieSearcher')
+  const myCollection = client.collections.use('MovieSearcher')
 
   const response = await myCollection.query.nearText(searchTerm,{
     limit: 8,
