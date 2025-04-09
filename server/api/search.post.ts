@@ -17,7 +17,7 @@ const client: WeaviateClient = await weaviate.connectToWeaviateCloud(
     const body = await readBody(event)
     const base64 = body.data.split(',')[1];
 
-    const collection = client.collections.get('MovieSearcher')
+    const collection = client.collections.use('MovieSearcher')
     const response = await collection.query.nearImage(base64, {
       limit: 15,
       distance: 1.3
